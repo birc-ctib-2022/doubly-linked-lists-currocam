@@ -103,7 +103,7 @@ class DLList(Generic[T]):
         """Get string with the elements going in the next direction."""
         elms: list[str] = []
         
-        return f"[{', '.join(elms)}]"
+        return f"[{', '.join(str(el) for el in self.into_generator())}]"
     __repr__ = __str__  # because why not?
 
 
@@ -129,7 +129,11 @@ def reverse(x: DLList[T]) -> None:
     >>> print(x)
     [5, 4, 3, 2, 1]
     """
-    ...
+    return DLList(el for el in x.into_reverse_generator())
+
+def swap_link(link: Link) -> None:
+    insert_after(link.next, link.val)
+    remove_link(link) 
 
 
 def sort(x: DLList[S]) -> None:
@@ -141,4 +145,12 @@ def sort(x: DLList[S]) -> None:
     >>> print(x)
     [1, 3, 4, 5, 6, 12]
     """
-    ...
+    def inner(x) -> bool:
+        link, is_sorted = x.head.next, True
+        while link.next.val is not None:
+            if link.val > link.next.val:
+                is_sorted, _ = False, swap_link(link)   
+            link = link.next  
+        return is_sorted
+    while not inner(x):
+        pass

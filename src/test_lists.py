@@ -1,7 +1,7 @@
 """List tests."""
 
 
-from lists import DLList, keep
+from lists import DLList, keep, reverse, sort
 
 
 def test_into_generator() -> None:
@@ -26,3 +26,15 @@ def test_equality() -> None:
 def test_keep() -> None:
     x = DLList([1, 2, 3, 4, 5])
     assert keep(x, lambda a: a % 2 == 0) == DLList([2, 4])
+
+def test_reverse() -> None:
+    x, expected = DLList([1, 2, 3, 4, 5]), DLList([5, 4, 3, 2, 1])
+    assert reverse(x) == expected
+
+def test_sort() -> None:
+    x, expected = DLList([1, 3, 12, 6, 4, 5]), DLList([1, 3, 4, 5, 6, 12])
+    sort(x) 
+    assert x == expected
+    x, expected = DLList([5, 4, 3, 2, 1, 0]), DLList([0, 1, 2, 3, 4, 5])
+    sort(x) 
+    assert x == expected
