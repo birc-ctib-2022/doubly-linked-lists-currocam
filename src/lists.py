@@ -78,6 +78,17 @@ class DLList(Generic[T]):
         # after that link.
         for val in seq:
             insert_after(self.head.prev, val)
+    def __eq__(self, other):
+        try:
+            for x, y in zip(
+                self.into_generator(), other.into_generator(),
+                strict= True
+                ):
+                if x != y:
+                    return False
+        except ValueError:
+            return False
+        return True
     def into_generator(self):
         link = self.head.next
         while link and link is not self.head:
@@ -107,8 +118,7 @@ def keep(x: DLList[T], p: Callable[[T], bool]) -> None:
     >>> print(x)
     [2, 4]
     """
-    ...
-
+    pass
 
 def reverse(x: DLList[T]) -> None:
     """

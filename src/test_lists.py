@@ -16,3 +16,13 @@ def test_into_reverse_generator() -> None:
     x.reverse()
     for obs, exp in zip(observed, x):
         assert obs == exp
+
+def test_equality() -> None:
+    assert DLList([1, 2, 3, 4, 5]) == DLList([1, 2, 3, 4, 5])
+    assert DLList([1, 2, 3, 4, 5]) != DLList([1, 2, 4, 4, 5])
+    assert DLList([1, 2, 3, 4, 5]) != DLList([1, 4, 5])
+
+
+# def test_keep() -> None:
+#     x = DLList([1, 2, 3, 4, 5])
+#     assert keep(x, lambda a: a % 2 == 0) == DLList([2, 4])
