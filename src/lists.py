@@ -78,14 +78,20 @@ class DLList(Generic[T]):
         # after that link.
         for val in seq:
             insert_after(self.head.prev, val)
-
+    def into_generator(self):
+        link = self.head.next
+        while link and link is not self.head:
+            yield(link.val)
+            link = link.next
+    def into_reverse_generator(self):
+        link = self.head.prev
+        while link and link is not self.head:
+            yield(link.val)
+            link = link.prev
     def __str__(self) -> str:
         """Get string with the elements going in the next direction."""
         elms: list[str] = []
-        link = self.head.next
-        while link and link is not self.head:
-            elms.append(str(link.val))
-            link = link.next
+        
         return f"[{', '.join(elms)}]"
     __repr__ = __str__  # because why not?
 
