@@ -118,7 +118,7 @@ def keep(x: DLList[T], p: Callable[[T], bool]) -> None:
     >>> print(x)
     [2, 4]
     """
-    pass
+    return DLList(el for el in x.into_generator() if p(el))
 
 def reverse(x: DLList[T]) -> None:
     """
