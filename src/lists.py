@@ -120,6 +120,9 @@ def keep(x: DLList[T], p: Callable[[T], bool]) -> None:
             remove_link(link)
         link = link.next 
 
+def swap_dir(x: Link) -> None:
+    x.next, x.prev = x.prev, x.next
+
 def reverse(x: DLList[T]) -> None:
     """
     Reverse the list x.
@@ -129,11 +132,15 @@ def reverse(x: DLList[T]) -> None:
     >>> print(x)
     [5, 4, 3, 2, 1]
     """
-    return DLList(el for el in x.into_reverse_generator())
+    link = x.head.next
+    while link is not x.head:
+        swap_dir(link)
+        link = link.prev
+    swap_dir(x.head)
 
-def swap_link(link: Link) -> None:
-    insert_after(link.next, link.val)
-    remove_link(link) 
+def swap_link(actual: Link) -> None:
+    insert_after(actual.next, actual.val)
+    remove_link(actual) 
 
 
 def sort(x: DLList[S]) -> None:
