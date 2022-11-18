@@ -25,11 +25,13 @@ def test_equality() -> None:
 
 def test_keep() -> None:
     x = DLList([1, 2, 3, 4, 5])
-    assert keep(x, lambda a: a % 2 == 0) == DLList([2, 4])
+    keep(x, lambda a: a % 2 == 0)
+    assert x == DLList([2, 4])
 
 def test_reverse() -> None:
     x, expected = DLList([1, 2, 3, 4, 5]), DLList([5, 4, 3, 2, 1])
-    assert reverse(x) == expected
+    reverse(x)
+    assert x == expected
 
 def test_sort() -> None:
     x, expected = DLList([1, 3, 12, 6, 4, 5]), DLList([1, 3, 4, 5, 6, 12])
