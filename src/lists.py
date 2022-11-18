@@ -78,15 +78,28 @@ class DLList(Generic[T]):
         # after that link.
         for val in seq:
             insert_after(self.head.prev, val)
-
+    def __eq__(self, other: DLList):
+        x, y = self.head.next, other.head.next
+        while x != self.head and y != other.head:
+            if x.val != y.val:
+                return False
+            x, y = x.next, y.next
+        return x == self.head and y == other.head
+    def into_generator(self):
+        link = self.head.next
+        while link and link is not self.head:
+            yield(link.val)
+            link = link.next
+    def into_reverse_generator(self):
+        link = self.head.prev
+        while link and link is not self.head:
+            yield(link.val)
+            link = link.prev
     def __str__(self) -> str:
         """Get string with the elements going in the next direction."""
         elms: list[str] = []
-        link = self.head.next
-        while link and link is not self.head:
-            elms.append(str(link.val))
-            link = link.next
-        return f"[{', '.join(elms)}]"
+        
+        return f"[{', '.join(str(el) for el in self.into_generator())}]"
     __repr__ = __str__  # because why not?
 
 
@@ -101,8 +114,14 @@ def keep(x: DLList[T], p: Callable[[T], bool]) -> None:
     >>> print(x)
     [2, 4]
     """
-    ...
+    link = x.head.next
+    while link is not x.head:
+        if not p(link.val): 
+            remove_link(link)
+        link = link.next 
 
+def swap_dir(x: Link) -> None:
+    x.next, x.prev = x.prev, x.next
 
 def reverse(x: DLList[T]) -> None:
     """
@@ -113,7 +132,15 @@ def reverse(x: DLList[T]) -> None:
     >>> print(x)
     [5, 4, 3, 2, 1]
     """
-    ...
+    link = x.head.next
+    while link is not x.head:
+        swap_dir(link)
+        link = link.prev
+    swap_dir(x.head)
+
+def swap_link(actual: Link) -> None:
+    insert_after(actual.next, actual.val)
+    remove_link(actual) 
 
 
 def sort(x: DLList[S]) -> None:
@@ -125,4 +152,12 @@ def sort(x: DLList[S]) -> None:
     >>> print(x)
     [1, 3, 4, 5, 6, 12]
     """
-    ...
+    def inner(x) -> bool:
+        link, is_sorted = x.head.next, True
+        while link.next.val is not None:
+            if link.val > link.next.val:
+                is_sorted, _ = False, swap_link(link)   
+            link = link.next  
+        return is_sorted
+    while not inner(x):
+        pass
